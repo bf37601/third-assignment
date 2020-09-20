@@ -5,6 +5,8 @@ import numpy as np
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
+from sklearn.metrics import f1_score
+from sklearn.metrics import fbeta_score
 
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -37,9 +39,11 @@ df_train = df_train.dropna()
 
 # one variable
 x_train = df_train[['Light']]
+# x_train = df_train[['CO2']]
 y_train = df_train.Occupancy
 
 x_test = df_test[['Light']]
+# x_test = df_test[['CO2']]
 y_test = pd.read_csv(results_file, sep='\t', names=['Occupancy']).Occupancy
 
 
@@ -101,3 +105,23 @@ test_sensitivity_all = tp_test_all / (tp_test_all + fn_test_all)
 test_specificity_all = tn_test_all / (fp_test_all + tn_test_all)
 
 pd.DataFrame(y_test_pred).to_csv(output_file, index=False, header=False)
+
+# f score
+# beta value for a: <1 precision more important
+# beta value for b: >1 recall more important
+
+# one var
+f1_train = f1_score(y_train, y_train_pred)
+f1_test = f1_score(y_test, y_test_pred)
+f1_beta_a_test = fbeta_score(y_test, y_test_pred, beta=0.2)
+f1_beta_b_test = fbeta_score(y_test, y_test_pred, beta=10)
+f1_beta_a_train = fbeta_score(y_train, y_train_pred, beta=0.2)
+f1_beta_b_train = fbeta_score(y_train, y_train_pred, beta=10)
+
+# all var
+f1_train_all = f1_score(y_train, y_train_pred_all)
+f1_test_all = f1_score(y_test, y_test_pred_all)
+f1_beta_a_test_all = fbeta_score(y_test, y_test_pred_all, beta=0.2)
+f1_beta_b_test_all = fbeta_score(y_test, y_test_pred_all, beta=10)
+f1_beta_a_train_all = fbeta_score(y_train, y_train_pred_all, beta=0.2)
+f1_beta_b_train_all = fbeta_score(y_train, y_train_pred_all, beta=10)
