@@ -22,7 +22,11 @@ df_public.replace(to_replace='No', value='0', inplace=True)
 
 df_public = df_public.astype(int)
 
-x_train, x_test, y_train, y_test = train_test_split(df_public[['Hobbyist', 'YearsCode', 'YearsCodePro']], df_public.BetterLife, random_state=20)
+x_train, x_test, y_train, y_test = train_test_split(
+    df_public[['Hobbyist',
+               'YearsCode',
+               'YearsCodePro']],
+    df_public.BetterLife, random_state=20)
 
 l_reg = LogisticRegression()
 l_reg.fit(x_train, y_train)
